@@ -9,10 +9,11 @@ namespace myblog.Data.Abstract
     public interface IRepositoryBase<T>  where T:EntityBase 
     {
         Task<T> FindById(int EntityId); 
+        Task<IEnumerable<T>> GetAll(); 
         Task<IEnumerable<T>>  Select(Expression<Func<T, bool>> Filter = null); 
-        Task Insert(T Entity); 
-        Task Update(T Entity); 
-        Task Delete(int EntityId); 
-        Task Delete(T Entity); 
+        Task<T> Insert(T Entity); 
+        Task<T> Update(T Entity); 
+        Task<T> Delete(int EntityId); 
+        Task<T> Delete(T Entity); 
     }
 }

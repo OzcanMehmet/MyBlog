@@ -1,25 +1,27 @@
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using MediatR;
 using myblog.Data.Abstract;
-using myblog.Model.Commands;
+using myblog.Data.Commands;
 using myblog.Model.DTO;
 using myblog.Model.Entity;
 
-namespace myblog.Model.Handler
+namespace myblog.Data.Handler.Command
 {
     public class CreateBlogCommandHandler : IRequestHandler<CreateBlogCommand, Blog>
     {
         IBlogRepository _blogRepository { get; set;}
-        public CreateBlogCommandHandler(IBlogRepository blogRepository)
+        IMapper _mapper { get; set;}
+        public CreateBlogCommandHandler(IBlogRepository blogRepository,IMapper mapper)
         {
             _blogRepository = blogRepository;
+            _mapper =mapper;
         }
-
         public async Task<Blog> Handle(CreateBlogCommand request, CancellationToken cancellationToken)
         {
-            await _blogRepository.Insert(new Blog());
-            return new Blog();
+            
+            return await _blogRepository.Insert(_mapper.Map<CreateBlogDTO,Blog>(request.createblog));
         }
     }
 

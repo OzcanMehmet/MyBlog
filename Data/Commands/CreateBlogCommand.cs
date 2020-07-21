@@ -2,7 +2,7 @@ using MediatR;
 using myblog.Model.DTO;
 using myblog.Model.Entity;
 
-namespace myblog.Model.Commands
+namespace myblog.Data.Commands
 {
     public class CreateBlogCommand : IRequest<Blog>
     {

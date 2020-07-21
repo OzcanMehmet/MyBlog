@@ -14,6 +14,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using myblog.Data;
+using myblog.Data.Abstract;
+using myblog.Data.Concrete;
 using myblog.Model.Entity;
 
 namespace myblog
@@ -30,9 +32,15 @@ namespace myblog
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
+            
             services.AddDbContext<BlogContex>(opt => opt.UseSqlServer(Configuration.GetConnectionString("ApiConnection")));
+            
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             services.AddMediatR(AppDomain.CurrentDomain.GetAssemblies());
+
+            services.AddTransient<IBlogRepository,BlogRepository>();
+
             services.AddControllers();
         }
 

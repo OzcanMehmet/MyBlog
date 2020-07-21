@@ -27,31 +27,42 @@ namespace myblog.Data.Concrete
             return await _context.Blog.Where(Filter).ToListAsync();
         }
 
-        public async Task Insert(Blog Entity)
+        public async Task<Blog> Insert(Blog Entity)
         {
             _context.Blog.Add(Entity);
             await _context.SaveChangesAsync();
+            return Entity;
         }
 
-        public async Task Update(Blog Entity)
-        {
-            _context.Blog.Update(Entity);
+        public async Task<Blog> Update(Blog Entity)
+        {   
+
+            Entity.UpdateDate = DateTime.Now;
+            _context.Update(Entity);
             await _context.SaveChangesAsync();
+            return Entity;
         }
 
-        public async Task Delete(int EntityId)
+        public async Task<Blog>  Delete(int EntityId)
         {
-            await Delete(_context.Blog.FirstOrDefault(x=>x.Id==EntityId));
+            return await Delete(await FindById(EntityId));
         }
 
-        public async Task Delete(Blog Entity)
+        public async Task<Blog>  Delete(Blog Entity)
         {
             if(Entity!=null)
             {
                 _context.Blog.Remove(Entity);
                 await _context.SaveChangesAsync();
+                return Entity;
             }
+            return null;
 
+        }
+
+        public async Task<IEnumerable<Blog>> GetAll()
+        {
+            return await _context.Blog.ToListAsync();
         }
     }
 }
